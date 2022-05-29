@@ -1,4 +1,6 @@
-// https://www.youtube.com/watch?v=vyqbNFMDRGQ  left off at the 23 min mark
+// https://www.youtube.com/watch?v=vyqbNFMDRGQ  left off at the 28 min mark
+
+//const { timeHours } = require('d3-time');
 
 const canvas = document.querySelector('canvas');
 const c = canvas.getContext('2d');
@@ -8,20 +10,28 @@ canvas.height = 576;
 
 c.fillRect(0, 0, canvas.width, canvas.height);
 
+const gravity = 0.2;
+
 class Sprite {
   constructor({ position, velocity }) {
     this.position = position;
     this.velocity = velocity;
+    this.height = 150;
   }
 
   draw() {
     c.fillStyle = 'red';
-    c.fillRect(this.position.x, this.position.y, 50, 150);
+    c.fillRect(this.position.x, this.position.y, 50, this.height);
   }
 
   update() {
     this.draw();
+
     this.position.y += this.velocity.y;
+
+    if (this.position.y + this.height + this.velocity.y >= canvas.height) {
+      this.velocity.y = 0;
+    } else this.velocity.y += gravity;
   }
 }
 
@@ -32,7 +42,7 @@ const player = new Sprite({
   },
   velocity: {
     x: 0,
-    y: 10,
+    y: 0,
   },
 });
 
